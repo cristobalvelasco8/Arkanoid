@@ -30,13 +30,13 @@ public class Arkanoid {
 		ventana = new JFrame("Arkanoid V1");
 		ventana.setBounds(0, 0, 800, 600);
 		
-		// Para colocar objetos sobre la ventana debo asignarle un "layout" (plantilla) al panel principal de la ventana
+		// Asignación de un "layout" al panel principal de la ventana
 		ventana.getContentPane().setLayout(new BorderLayout());
 		
-		// Creo una lista de actores que intervendrá en el juego.
+		// Creación de una lista de actores que tendrá el juego.
 		actores = creaActores();
 		
-		// Creo y agrego un canvas, es un objeto que permitirá dibujar sobre él
+		// Creación y agregación de un canvas, objeto que permitirá dibujar sobre él
 		canvas = new Micanvas(actores);
 		ventana.getContentPane().add(canvas, BorderLayout.CENTER);
 		// Consigo que la ventana no se redibuje por los eventos de Windows
@@ -72,7 +72,7 @@ public class Arkanoid {
 			int millisDeProcesamientoDeEscena = (int) (millisDespuesDeProcesarEscena - millisAntesDeProcesarEscena);
 			int millisPausa = millisPorCadaFrame - millisDeProcesamientoDeEscena;
 			millisPausa = (millisPausa < 0)? 0 : millisPausa;
-			// "Duermo" el proceso principal durante los milllis calculados.
+			// "Paro" el proceso principal durante los milllis calculados.
 			try {
 				Thread.sleep(millisPausa);
 			} catch (InterruptedException e) {

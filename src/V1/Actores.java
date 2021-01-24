@@ -4,7 +4,7 @@ package V1;
 import java.awt.Graphics;
 
 public abstract class Actores {
-	protected int x, y; // Coordenadas x e y del actor
+	protected int x, y; // Coordenadas del actor
 	protected int ancho, alto; // ancho y alto que ocupa el actor en pantalla
 	
 	public Actores() {
