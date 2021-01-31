@@ -6,9 +6,10 @@ import java.awt.Graphics;
 
 public class Ladrillo extends Actores {
 	private String nombre;
+	private Color colores;
 	@Override
 	public void paint(Graphics g) {
-		g.setColor(Color.WHITE);
+		g.setColor(colores);
 		g.fillRect(this.x, this.y, this.ancho, this.alto);
 		
 	}
@@ -19,13 +20,11 @@ public class Ladrillo extends Actores {
 		
 	}
 
-	public Ladrillo() {
-		super();
-	}
 
-	public Ladrillo(int x, int y, int ancho, int alto, String nombre) {
+	public Ladrillo(int x, int y, int ancho, int alto, String nombre, Color colores) {
 		super(x, y, ancho, alto);
 		this.nombre = nombre;
+		this.colores = colores;
 		
 	}
 
@@ -41,6 +40,21 @@ public class Ladrillo extends Actores {
 	public String toString() {
 		return "Ladrillo [nombre=" + nombre + ", x=" + x + ", y=" + y + ", ancho=" + ancho + ", alto=" + alto + "]";
 	}
+
+	/**
+	 * @return the colores
+	 */
+	public Color getColores() {
+		return colores;
+	}
+
+	/**
+	 * @param colores the colores to set
+	 */
+	public void setColores(Color colores) {
+		this.colores = colores;
+	}
+
 	
 	
 

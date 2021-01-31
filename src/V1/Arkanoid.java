@@ -6,6 +6,10 @@ import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -16,43 +20,82 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 
+
+
 public class Arkanoid {
 	private static int FPS = 60;
 	private static JFrame ventana = null;
 	private static List<Actores> actores = new ArrayList<Actores>();
-	private static Micanvas canvas = null;
+	private static Micanvas canvas = null; 
+	private static Arkanoid instance = null;
+	static Nave nave = null;
 	
+	
+	
+	
+	
+	public static Arkanoid getInstance() {
+		if (instance == null) { 
+			instance = new Arkanoid();
+		}
+		return instance;
+	}
 	/**
 	 * Main
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public Arkanoid () {
 		ventana = new JFrame("Arkanoid V1");
-		ventana.setBounds(0, 0, 800, 600);
+		ventana.setBounds(0, 0, 600, 800);
 		
-		// Asignación de un "layout" al panel principal de la ventana
+		// Para colocar objetos sobre la ventana debo asignarle un "layout" (plantilla) al panel principal de la ventana
 		ventana.getContentPane().setLayout(new BorderLayout());
 		
-		// Creación de una lista de actores que tendrá el juego.
+		// Creo una lista de actores que intervendrá en el juego.
 		actores = creaActores();
 		
-		// Creación y agregación de un canvas, objeto que permitirá dibujar sobre él
+		// Creo y agrego un canvas, es un objeto que permitirá dibujar sobre él
 		canvas = new Micanvas(actores);
+		canvas.addMouseMotionListener(new MouseAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				super.mouseMoved(e);
+				nave.mover(e.getX());
+			}			
+		});
+		
+		// Desvío los eventos de teclado hasta la Nave
+		canvas.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				super.keyPressed(e);
+				nave.keyPressed(e);
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				super.keyReleased(e);
+				nave.keyReleased(e);
+			}
+		});
 		ventana.getContentPane().add(canvas, BorderLayout.CENTER);
-		// Consigo que la ventana no se redibuje por los eventos de Windows
+		// No se redibuja la pantalla con eventos de windows.
 		ventana.setIgnoreRepaint(true);
-		// Hago que la ventana sea visible
+		// Ventana visible
 		ventana.setVisible(true);
 		
-		// Comienzo un bucle, que consistirá en el juego completo.
-		juego();
 	}
 	
+	
+	public static void main (String[] args) {
+		// Comienzo un bucle, que consistirá en el juego completo.
+		Arkanoid.getInstance().juego();
+	}
 	
 	/**
 	 * Bucle del juego principal
 	 */
-	public static void juego () {
+	public  void juego () {
 		int millisPorCadaFrame = 1000 / FPS;
 		do {
 			// Redibujo la escena tantas veces por segundo como indique la variable FPS
@@ -72,7 +115,7 @@ public class Arkanoid {
 			int millisDeProcesamientoDeEscena = (int) (millisDespuesDeProcesarEscena - millisAntesDeProcesarEscena);
 			int millisPausa = millisPorCadaFrame - millisDeProcesamientoDeEscena;
 			millisPausa = (millisPausa < 0)? 0 : millisPausa;
-			// "Paro" el proceso principal durante los milllis calculados.
+			// "Duermo" el proceso principal durante los milllis calculados.
 			try {
 				Thread.sleep(millisPausa);
 			} catch (InterruptedException e) {
@@ -81,20 +124,39 @@ public class Arkanoid {
 		} while (true);
 	}
 	private static List<Actores> creaActores () {
+		// Lista de actores.
+		// En esta version solo añado un ladrillo, la bola y una nave.
 		List<Actores> actores = new ArrayList<Actores>();
-		
-		Ladrillo ladrillo = new Ladrillo (1, 1, 75, 30, "1");
-		actores.add(ladrillo);
+		int x = 20, y = 30;
+		for (int i = 0; i < 6; i++) {
+			
+			for ( int j  = 0; j < 10; j++) {
+				Ladrillo ladrillo = new Ladrillo(x, y, 50, 20, "ladrillo", Color.red);
+				actores.add(ladrillo);
+				x += 55;
+				if (y == 30) ladrillo.setColores(Color.cyan);
+				if (y == 55) ladrillo.setColores(Color.blue);
+				if (y == 80) ladrillo.setColores(Color.pink);
+				if (y == 130) ladrillo.setColores(Color.orange);
+				if (y == 155) ladrillo.setColores(Color.white);
+				}
+			y+=25; x = 20;
+			}
 		
 		Pelota pelota = new Pelota (400, 300, 25, 25, "Pelota");
 		actores.add(pelota);
 		
-		Nave nave = new Nave (400, 525, 100, 20, "Nave");
+		nave = new Nave (400, 725, 100, 20, "Nave");
 		actores.add(nave);
 		
 		
 		// Devuelvo la lista con todos los actores del juego
 		return actores;
+	}
+
+	
+	public Micanvas getCanvas() {
+		return canvas;
 	}
 	
 

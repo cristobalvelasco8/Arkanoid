@@ -4,6 +4,9 @@ package V1;
 import java.awt.Color;
 import java.awt.Graphics;
 
+
+
+
 public class Pelota extends Actores {
 	private String nombre;
 	private int velocidadX = -8;
@@ -19,14 +22,12 @@ public class Pelota extends Actores {
 	@Override
 	public void actua() {
 		this.x += this.velocidadX;
-		if (this.x < 0 || this.x > 800) {
-			this.velocidadX = -this.velocidadX;
+		if (this.x <0 || (this.x + this.ancho) > Arkanoid.getInstance().getCanvas().getWidth()) {
+			this.velocidadX = - this.velocidadX;
 		}
-
 		this.y += this.velocidadY;
-		if (this.y < 0 || this.y > 600) {
+		if (this.y < 0 || (this.y + this.alto) > Arkanoid.getInstance().getCanvas().getHeight()) {
 			this.velocidadY = -this.velocidadY;
-
 		}
 	}
 
