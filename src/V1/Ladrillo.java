@@ -4,7 +4,11 @@ package V1;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Ladrillo extends Actores {
+
+
+
+
+public class Ladrillo extends Actor {
 	private String nombre;
 	private Color colores;
 	@Override
@@ -26,6 +30,15 @@ public class Ladrillo extends Actores {
 		this.nombre = nombre;
 		this.colores = colores;
 		
+	}
+	public void colisionaCon(Actor a) {
+		super.colisionaCon(a);
+		// Si colisionamos con un player o un disparo, eliminamos al monstruo
+		if (a instanceof Pelota) {
+			Arkanoid.getInstance().eliminaActor(this);
+			ResourcesCache.getInstance().playSonido("explosion.wav");
+			Arkanoid.getInstance().incorporaNuevoActor(new Explosion(this.x, this.y));
+		}
 	}
 
 	public String getNombre() {

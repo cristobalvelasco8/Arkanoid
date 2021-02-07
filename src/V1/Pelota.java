@@ -7,14 +7,16 @@ import java.awt.Graphics;
 
 
 
-public class Pelota extends Actores {
+
+
+public class Pelota extends Actor {
 	private String nombre;
-	private int velocidadX = -8;
-	private int velocidadY = -8;
+	private int velocidadX = -6;
+	private int velocidadY = -6;
 
 	@Override
 	public void paint(Graphics g) {
-		g.setColor(Color.PINK);
+		g.setColor(Color.magenta);
 		g.fillOval(this.x, this.y, this.ancho, this.alto);
 
 	}
@@ -40,6 +42,16 @@ public class Pelota extends Actores {
 		super(x, y, ancho, alto);
 		this.nombre = nombre;
 		
+	}
+	public void colisionaCon(Actor a) {
+		super.colisionaCon(a);
+		// Si colisionamos con un player o un disparo, eliminamos al monstruo
+		if (a instanceof Nave) {
+			Arkanoid.pelota.velocidadY=  -6;
+		}
+		if (a instanceof Ladrillo) {
+			Arkanoid.pelota.velocidadY=  +6;
+		}
 	}
 
 	public String getNombre() {

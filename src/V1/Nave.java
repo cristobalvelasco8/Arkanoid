@@ -6,16 +6,12 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 
-public class Nave extends Actores {
+
+public class Nave extends Actor {
 	private String nombre;
 	private boolean izquierda = false, derecha = false;
 	public static int VELOCIDAD = 5;
-	@Override
-	public void paint(Graphics g) {
-		g.setColor(Color.YELLOW);
-		g.fillRect(this.x, this.y, this.ancho, this.alto);
-		
-	}
+	
 
 	@Override
 	public void actua() {
@@ -35,6 +31,9 @@ public class Nave extends Actores {
 	public Nave(int x, int y, int ancho, int alto, String nombre) {
 		super(x, y, ancho, alto);
 		this.nombre = nombre;
+		this.spriteActual = ResourcesCache.getInstance().getImagen("nave-50x15.png");
+		// Ajusto el ancho virtual de este objeto al mismo ancho que tiene la imagen del sprite
+		this.ancho = this.spriteActual.getWidth();
 
 	}
 
